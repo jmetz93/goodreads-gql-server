@@ -11,13 +11,37 @@ const {
 
 require('dotenv').config()
 
+function translate(lang, str) {
+  const apiKey = process.env.translate_key
+	const url =
+    'https://www.googleapis.com' +
+    '/language/translate/v2' +
+  	'?key=' + apiKey +
+    '&source=en' +
+    '&target=' + lang +
+    '&q=' + encodeURIComponent(str)
+  return fetch(url)
+ 		.then(response => response.json())
+	  .then(parsedResponse =>
+    	parsedResponse
+      	.data
+        .translations[0]
+        .translatedText
+    )
+}
 const BookType = new GraphQLObjectType({
   name: 'Book',
   description: '...',
    fields: () => ({
     title: {
       type: GraphQLString,
-      resolve: xml => xml.GoodreadsResponse.book[0].title[0]
+      args: {
+        lang: { type: GraphQLString }
+      },
+      resolve: (xml, args) => {
+        const title = xml.GoodreadsResponse.book[0].title[0]
+        return args.lang ? translate(args.lang, title) : title
+      }
     },
     isbn: {
       type: GraphQLString,
