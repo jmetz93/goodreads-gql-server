@@ -9,6 +9,8 @@ const {
   GraphQLList
 } = require('graphql');
 
+require('dotenv').config()
+
 const BookType = new GraphQLObjectType({
   name: 'Book',
   description: '...',
@@ -52,7 +54,7 @@ module.exports = new GraphQLSchema({
           id: { type: GraphQLInt }
         },
         resolve: (root, args) => fetch(
-          `https://www.goodreads.com/author/show.xml?id=${args.id}&key=risKm8wwXsIcyEiTktvA`
+          `https://www.goodreads.com/author/show.xml?id=${args.id}&key=${process.env.api_key}`
         )
         .then(response => response.text())
         .then(parseXML)

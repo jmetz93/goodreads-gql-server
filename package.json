@@ -20,6 +20,7 @@
   "homepage": "https://github.com/jmetz93/goodreads-gql-server#readme",
   "dependencies": {
     "dataloader": "^1.4.0",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-graphql": "^0.6.12",
     "graphql": "^0.13.2",
